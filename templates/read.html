@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Blog en Django</title>
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --text-light: #6b7280;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        /* Estilo de tarjeta para cada post */
+        .post-card {
+            background-color: var(--card-bg);
+            padding: 24px;
+            margin-bottom: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-card h2 {
+            margin-top: 0;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+        .post-content {
+            color: #4b5563;
+            margin: 16px 0;
+        }
+
+        /* Metadatos (Autor y Fecha) */
+        .post-meta {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: var(--text-light);
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Blog de {{ publication.author.username }}</h1>
+        
+        <ul>
+        {% for publication in post_list %}
+            <li class="post-card">
+                <h2>{{ publication.title }}</h2>
+                <div class="post-content">
+                    <p>{{ publication.content }}</p>
+                </div>
+                <div class="post-meta">
+                    <span>Por: <strong>{{ publication.author.username }}</strong></span>
+                    <span>Publicado el: {{ publication.created_at }}</span>
+                </div>
+            </li>
+        {% empty %}
+            <p class="empty-message">No hay publicaciones disponibles todavía.</p>
+        {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

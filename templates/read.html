@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Blog en Django</title>
+{% extends "_base.html" %}
+
+{% block title %}Publicaciones | Mi Blog{% endblock %}
+
+{% block extra_head %}
     <style>
         :root {
             --primary-color: #4f46e5;
@@ -89,20 +88,21 @@
             font-size: 1.1rem;
         }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <div class="container">
-        <h1>Blog de {{ publication.author.username }}</h1>
+        <h1>Publicaciones</h1>
         
         <ul>
         {% for publication in post_list %}
             <li class="post-card">
-                <h2>{{ publication.title }}</h2>
+                <h2><a href="{% url 'post_detail' publication.pk %}">{{ publication.title }}</a></h2>
                 <div class="post-content">
                     <p>{{ publication.content }}</p>
                 </div>
                 <div class="post-meta">
-                    <span>Por: <strong>{{ publication.author.username }}</strong></span>
+                    <span>Por: <strong>{{ publication.author.username|default:"Autor desconocido" }}</strong></span>
                     <span>Publicado el: {{ publication.created_at }}</span>
                 </div>
             </li>
@@ -111,5 +111,4 @@
         {% endfor %}
         </ul>
     </div>
-</body>
-</html>
+{% endblock %}

@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{% block title %}Mi Blog{% endblock %}</title>
-	{% block extra_head %}{% endblock %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bloque de título dinámico: Permite que las vistas hijas sobrescriban el título de la pestaña -->
+    <title>{% block title %}Mi Blog{% endblock %}</title>
+    
+    <!-- Bloque extra_head: Espacio reservado para inyectar CSS o scripts exclusivos por vista -->
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
-	<header>
-		<a href="{% url 'post_list' %}">Mi Blog</a>
-	</header>
-	<main>
-		{% block content %}{% endblock %}
-	</main>
+    <header>
+        <!-- Enlace principal con resolución inversa: apunta al listado general de posts ('post_list') -->
+        <a href="{% url 'post_list' %}">Mi Blog</a> | 
+        
+        <!-- NUEVO ENLACE: Resolución inversa hacia la vista de creación de publicaciones ('post_create') -->
+        <a href="{% url 'post_create' %}">+ Crear Nuevo Post</a>
+    </header>
+    
+    <main>
+        <!-- Encabezado secundario opcional (puedes dejarlo vacío o usarlo para títulos globales) -->
+        <h2></h2>
+        
+        <!-- Bloque principal de contenido: Aquí se inyectará dinámicamente read.html, detail.html o create.html -->
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>

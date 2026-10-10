@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bloque de título dinámico: Permite que las vistas hijas sobrescriban el título de la pestaña -->
     <title>{% block title %}Mi Blog{% endblock %}</title>
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
     
     <!-- Bloque extra_head: Espacio reservado para inyectar CSS o scripts exclusivos por vista -->
     {% block extra_head %}{% endblock %}

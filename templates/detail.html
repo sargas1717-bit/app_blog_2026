@@ -10,4 +10,5 @@
 		| Publicado el {{ post.created_at|date:"d/m/Y H:i" }}</p>
 	<div>{{ post.content|linebreaks }}</div>
 </article>
+<a href="{% url 'post_update' post.pk %}">Editar Publicación</a>
 {% endblock %}

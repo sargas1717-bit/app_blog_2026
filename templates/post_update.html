@@ -1,0 +1,10 @@
+{% extends '_base.html' %}
+
+{% block content %}
+    <h2>Actualizar Post</h2>
+    <form method="post">
+        {% csrf_token %} <!-- Protege el formulario contra ataques de Falsificación de Petición en Sitios Cruzados -->
+        {{ form.as_p }}  <!-- Renderiza automáticamente los campos del modelo envueltos en etiquetas <p> -->
+        <button type="submit">Actualizar</button>
+    </form>
+{% endblock %}

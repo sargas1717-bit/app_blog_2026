@@ -1,0 +1,20 @@
+{% extends '_base.html' %}
+
+{% block title %}Eliminar Post | Mi Blog{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>¿Estás seguro de que deseas eliminar este post?</h2>
+    
+    <!-- Mostramos el título del post que se va a eliminar -->
+    <p>Se eliminará permanentemente el artículo: <strong>"{{ post.title }}"</strong></p>
+
+    <!-- El formulario POST es obligatorio para que Django ejecute la acción de borrado -->
+    <form method="post">
+        {% csrf_token %} <!-- Protección de seguridad contra ataques CSRF -->
+        
+        <button type="submit" class="btn-danger">Sí, eliminar</button>
+        <a href="{% url 'post_detail' post.pk %}">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

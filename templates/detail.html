@@ -11,4 +11,5 @@
 	<div>{{ post.content|linebreaks }}</div>
 </article>
 <a href="{% url 'post_update' post.pk %}">Editar Publicación</a>
+<a href="{% url 'post_delete' post.pk %}">Eliminar Publicación</a>
 {% endblock %}

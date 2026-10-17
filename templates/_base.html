@@ -33,8 +33,9 @@
             </form>
 
         {% else %}
-            <!-- Enlace visible para visitantes anónimos -->
-            <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a>
+            <!-- Enlaces visibles ÚNICAMENTE para visitantes anónimos -->
+            <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a> |
+            <a href="{% url 'signup' %}" class="btn btn-secondary">Registrarse</a>
         {% endif %}
     </header>
     

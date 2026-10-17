@@ -1,0 +1,31 @@
+<!-- Heredamos el esqueleto visual de nuestro sistema. 
+Asegúrate de que el nombre coincida con tu plantilla base (ej. _base.html o base.html) -->
+{% extends '_base.html' %}
+
+{% block title %}Iniciar Sesión | Sistema Seguro{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h2>Acceso Restringido</h2>
+    <p>Por favor, ingrese sus credenciales para continuar.</p>
+
+    <!-- El formulario debe usar obligatoriamente el método POST por seguridad. 
+    Nunca se envían contraseñas por el método GET porque quedarían expuestas en la URL. -->
+    <form method="post">
+        
+        <!-- MITIGACIÓN DE VULNERABILIDADES (CSRF):
+        Django posee un Middleware de seguridad estricto. Si envías un POST sin este token, 
+        el servidor responderá con un error 403 Forbidden. Esto evita ataques de 
+        Falsificación de Petición en Sitios Cruzados (Cross-Site Request Forgery). -->
+        {% csrf_token %}
+        
+        <!-- Renderizado dinámico del formulario:
+        La LoginView de Django inyecta automáticamente una variable llamada 'form' 
+        al contexto de esta plantilla. as_p transfiere los inputs (usuario y contraseña) 
+        envueltos en etiquetas de párrafo HTML <p>. -->
+        {{ form.as_p }}
+        
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+    </form>
+</div>
+{% endblock %}

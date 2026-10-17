@@ -127,3 +127,18 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# ==========================================
+# CONFIGURACIÓN DE AUTENTICACIÓN (django.contrib.auth)
+# ==========================================
+
+# ¿Por qué necesitamos esto?
+# Cuando usemos la vista prefabricada de Django (LoginView), el framework validará 
+# las credenciales contra la base de datos de forma segura. Si el login es exitoso, 
+# Django no sabe a dónde enviar al usuario. LOGIN_REDIRECT_URL instruye al framework 
+# para que redirija el tráfico a la ruta nombrada 'post_list' (el inicio de tu blog).
+LOGIN_REDIRECT_URL = 'post_list'
+
+# De manera similar, cuando el usuario destruye su sesión (LogoutView), 
+# lo enviamos de vuelta a la página principal para que siga viendo los artículos públicos.
+LOGOUT_REDIRECT_URL = 'post_list'

@@ -4,27 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bloque de título dinámico: Permite que las vistas hijas sobrescriban el título de la pestaña -->
+    <!-- Bloque de título dinámico (MVT - Template Inheritance): 
+         Define una 'ranura' llamada 'title'. Las vistas hijas inyectan su propio texto. 
+         Si no lo hacen, Django renderiza 'Mi Blog' por defecto. -->
     <title>{% block title %}Mi Blog{% endblock %}</title>
-	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
     
-    <!-- Bloque extra_head: Espacio reservado para inyectar CSS o scripts exclusivos por vista -->
+    <!-- Compilación de la ruta absoluta hacia nuestra hoja de estilos en /static/ -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    <!-- Bloque extra_head: Permite cargar scripts o CSS exclusivos por vista -->
     {% block extra_head %}{% endblock %}
 </head>
 <body>
     <header>
-        <!-- Enlace principal con resolución inversa: apunta al listado general de posts ('post_list') -->
+        <!-- Enlace principal: apunta al listado general de posts ('post_list') -->
         <a href="{% url 'post_list' %}">Mi Blog</a> | 
         
-        <!-- NUEVO ENLACE: Resolución inversa hacia la vista de creación de publicaciones ('post_create') -->
-        <a href="{% url 'post_create' %}">+ Crear Nuevo Post</a>
+        <!-- LÓGICA DE CONTROL DE ACCESO EN LA INTERFAZ (UI) -->
+        {% if user.is_authenticated %}
+            <!-- Enlaces visibles ÚNICAMENTE para usuarios con sesión activa -->
+            <a href="{% url 'post_create' %}">+ Crear Nuevo Post</a> |
+            <span>Bienvenido, {{ user.username }}</span> |
+            
+            <!-- Formulario POST obligatorio para evitar ataques CSRF al cerrar sesión -->
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+            </form>
+
+        {% else %}
+            <!-- Enlace visible para visitantes anónimos -->
+            <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a>
+        {% endif %}
     </header>
     
     <main>
-        <!-- Encabezado secundario opcional (puedes dejarlo vacío o usarlo para títulos globales) -->
         <h2></h2>
-        
-        <!-- Bloque principal de contenido: Aquí se inyectará dinámicamente read.html, detail.html o create.html -->
+        <!-- Bloque principal: Aquí se inyectan read.html, detail.html, create.html, etc. -->
         {% block content %}{% endblock %}
     </main>
 </body>

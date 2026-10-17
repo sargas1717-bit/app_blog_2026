@@ -1,15 +1,43 @@
+<!-- Heredamos el diseño y recursos globales desde la plantilla base -->
 {% extends "_base.html" %}
 
+<!-- Inyectamos dinámicamente el título del post en la pestaña del navegador -->
 {% block title %}{{ post.title }} | Mi Blog{% endblock %}
 
 {% block content %}
 <article>
-	<p><a href="{% url 'post_list' %}">&larr; Volver a publicaciones</a></p>
-	<h1>{{ post.title }}</h1>
-	<p>Por <strong>{{ post.author.username|default:"Autor desconocido" }}</strong>
-		| Publicado el {{ post.created_at|date:"d/m/Y H:i" }}</p>
-	<div>{{ post.content|linebreaks }}</div>
+    <!-- Enlace de retorno semántico hacia el listado general -->
+    <p><a href="{% url 'post_list' %}">&larr; Volver a publicaciones</a></p>
+    
+    <!-- Título principal de la publicación -->
+    <h1>{{ post.title }}</h1>
+    
+    <!-- Metadatos de la publicación:
+         post.author.username extrae el nombre del usuario vinculado por clave foránea (ForeignKey).
+         El filtro |default protege la vista en caso de valores nulos.
+         El filtro |date formatea la marca de tiempo (timestamp) en formato legible Día/Mes/Año Hora:Minutos -->
+    <p>
+        Por <strong>{{ post.author.username|default:"Autor desconocido" }}</strong>
+        | Publicado el {{ post.created_at|date:"d/m/Y H:i" }}
+    </p>
+    
+    <!-- Contenido del artículo: 
+         El filtro |linebreaks convierte saltos de línea de texto plano en párrafos <p> de HTML -->
+    <div>{{ post.content|linebreaks }}</div>
 </article>
-<a href="{% url 'post_update' post.pk %}">Editar Publicación</a>
-<a href="{% url 'post_delete' post.pk %}">Eliminar Publicación</a>
+
+<!-- ======================================================================= -->
+<!-- CONTROL DE ACCESO VISUAL (UI - PERMISOS POR OBJETO)                    -->
+<!-- Comparamos el usuario de la sesión activa (user) provisto por el contexto  -->
+<!-- global de Django contra el autor registrado en el objeto (post.author).  -->
+<!-- ======================================================================= -->
+{% if user == post.author %}
+    <hr>
+    <div class="author-actions">
+        <!-- Estos enlaces de gestión se compilan ÚNICAMENTE para el creador del artículo -->
+        <a href="{% url 'post_update' post.pk %}" class="btn btn-warning">Editar Publicación</a> | 
+        <a href="{% url 'post_delete' post.pk %}" class="btn btn-danger">Eliminar Publicación</a>
+    </div>
+{% endif %}
+
 {% endblock %}
